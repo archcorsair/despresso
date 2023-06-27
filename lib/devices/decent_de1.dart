@@ -862,29 +862,29 @@ class DE1 extends ChangeNotifier implements IDe1 {
 
         try {
           service.setSubState("10%");
-          await updateSettings();
-          service.setSubState("20%");
           ghcInfo = await getGhcInfo();
           ghcMode = await getGhcMode();
-          service.setSubState("30%");
+          service.setSubState("20%");
           machineSerial = await getSerialNumber();
-          service.setSubState("40%");
+          service.setSubState("30%");
           firmware = await getFirmwareBuild();
-          service.setSubState("50%");
+          service.setSubState("40%");
           var fan = await getFanThreshhold();
-          service.setSubState("60%");
+          service.setSubState("50%");
           if (fan < 50) setFanThreshhold(50);
-          service.setSubState("70%");
+          service.setSubState("60%");
           await setWaterLevelWarning(_settings.targetWaterlevel);
-          service.setSubState("80%");
+          service.setSubState("70%");
           await setSteamFlow(_settings.targetSteamFlow);
           steamFlow = await getSteamFlow();
-          service.setSubState("90%");
+          service.setSubState("80%");
           steamPurgeMode = await getSteamPurgeMode();
 
           flowEstimation = await getFlowEstimation();
-
+          service.setSubState("90%");
           await setFlushTimeout(max(_settings.targetFlushTime, _settings.targetFlushTime2));
+          service.setSubState("95%");
+          await updateSettings();
 
           if (_settings.launchWake) {
             await switchOn();
@@ -936,22 +936,29 @@ class DE1 extends ChangeNotifier implements IDe1 {
 
     int index = 0;
     data[index] = settingsService.steamSettings;
+    log.info("Set steam settings: ${data[index]}");
     index++;
     data[index] = settingsService.steamHeaterOff ? 0 : settingsService.targetSteamTemp;
     log.info("Set steam to temp: ${data[index]}");
     index++;
     data[index] = settingsService.targetSteamLength;
+    log.info("Steam length: ${data[index]}");
     index++;
     data[index] = settingsService.targetHotWaterTemp;
+    log.info("Hot water temp: ${data[index]}");
     index++;
     data[index] = settingsService.targetHotWaterVol;
+    log.info("Hot water vol: ${data[index]}");
     index++;
     data[index] = settingsService.targetHotWaterLength;
+    log.info("Hot water length: ${data[index]}");
     index++;
     data[index] = settingsService.targetEspressoVol;
+    log.info("Target espresso volume: ${data[index]}");
     index++;
 
     data[index] = settingsService.targetGroupTemp.toInt();
+    log.info("Target group temp: ${data[index]}");
     index++;
     data[index] = ((settingsService.targetGroupTemp - settingsService.targetGroupTemp.floor()) * 256.0).toInt();
     index++;
